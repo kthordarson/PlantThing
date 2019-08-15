@@ -1,0 +1,15 @@
+{% extends 'vokvarinn/base.html' %}
+{% load render_table from django_tables2 %}
+{% block content %}
+
+<html>
+    <head>
+
+
+        <title>List of plants</title>
+    </head>
+    <body>
+        {% render_table table %}
+    </body>
+</html>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'vokvarinn/base.html' %}
+{% load smooth_timedelta %}
+{% load render_table from django_tables2 %}
+plant water info<br>
+{% block content %}
+<h1>{{ plantinfo }}</h1>
+<br>
+
+<img height="300" width="300" src ="{{ plantinfo.image_thumbnail.url }}">
+
+<ul>
+    <h2>Water log:</h2>
+{% render_table water_log %}
+</ul>
+{% endblock %}

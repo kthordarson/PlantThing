@@ -1,0 +1,16 @@
+{% extends 'vokvarinn/base.html' %}
+<h1>edit schedule</h1>
+{% block content %}
+<br>
+<br>
+{% for item in schedule %}
+    {{ item }}
+{% endfor %}
+<br>
+<form method="POST" action='{{ action_url }}' enctype='multipart/form-data'> {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save" />
+    <input class="button" type="button" onclick="window.location.replace('/')" value="Cancel" />
+</form>
+
+{% endblock %}

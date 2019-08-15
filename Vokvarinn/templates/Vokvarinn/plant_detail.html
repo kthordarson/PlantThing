@@ -1,0 +1,28 @@
+{% extends 'vokvarinn/base.html' %}
+{% load smooth_timedelta %}
+{% load render_table from django_tables2 %}
+plant detail info<br>
+{% block content %}
+ <h3>{{ plant.name }}</h3>
+<br>
+
+<form method="POST" action='{{ action_url }}' enctype='multipart/form-data'> {% csrf_token %}
+    {{ water_form }}
+    <input class="btn btn-primary" type="submit" value="Water" />
+</form>
+<form action="/plant/{{ plant.id }}/edit"><input type="submit" Value="Edit" class="btn btn-secondary"></form>
+<br>
+
+Last water: {{  plant.last_water|date:"d. M y - H:i"  }}
+<br>
+Now: {{  time_now|date:"d. M y - H:i"  }}
+<br>
+Time diff: {{ time_since_water|smooth_timedelta }}
+<br>
+Image:
+<br>
+<img height="300" width="300" src ="{{ plant.image_thumbnail.url }}">
+<br>
+{% render_table water_log %}
+
+{% endblock %}

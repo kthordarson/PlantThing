@@ -1,0 +1,19 @@
+{% extends 'vokvarinn/base.html' %}
+{% block content %}
+{% block extra_css %}
+{{ form.media.css }}
+{% endblock %}
+
+{% block extra_js %}
+{{ form.media.js }}
+{% endblock %}
+<form method="POST" enctype="multipart/form-data" action=""> {% csrf_token %}
+ {{ form.as_p }}
+
+    <input type="submit" value="Save" />
+    <input class="button" type="button" onclick="window.location.replace('/')" value="Cancel" />
+
+</form>
+
+
+{% endblock %}

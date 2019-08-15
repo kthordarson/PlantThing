@@ -1,0 +1,13 @@
+{% extends 'vokvarinn/base.html' %}
+{% load smooth_timedelta %}
+{% load render_table from django_tables2 %}
+{% block content %}
+
+<h4><a class="btn btn-primary" role="button" href="{% url 'plant_create_view' %}">Add new plant</a></h4>
+<h4><a class="btn btn-primary" role="button" href="{% url 'plant_view_waterlog' %}">View log</a></h4>
+<h4><a class="btn btn-primary" role="button" href="{% url 'edit_schedule' %}">Edit schedule</a></h4>
+{% render_table planttable %}
+
+
+
+{% endblock %}
