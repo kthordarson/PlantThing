@@ -1,0 +1,21 @@
+li a {
+    color: green;
+}
+body {
+    background: white url("../images/bg1.jpg") no-repeat;
+    background-position: right center;
+    background-size: cover;
+}
+
+.crop {
+        width: 300px;
+        height: 300px;
+        overflow: hidden;
+        border-radius: 50%;
+        border: 5px solid #18392B;
+    }
+
+    .crop .round-image {
+        width: 300px;
+        height: auto;
+    }
