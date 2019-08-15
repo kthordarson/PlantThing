@@ -32,4 +32,4 @@ class PlantForm(forms.ModelForm):
     image = forms.ImageField()
     class Meta:
         model = Plants
-        fields = ['name', 'last_water', 'info_url', 'image',]# 'water_schedule']
+        fields = ['name', 'last_water', 'info_url', 'image', 'water_schedule']
