@@ -4,7 +4,7 @@
 <br>
 <br>
 {% for item in schedule %}
-    {{ item }}
+<li>{{ item.every }} {{ item.period }}</li>
 {% endfor %}
 <br>
 <form method="POST" action='{{ action_url }}' enctype='multipart/form-data'> {% csrf_token %}

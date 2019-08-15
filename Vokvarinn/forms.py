@@ -9,16 +9,18 @@ from .models import Plants, PlantLog
 #tasks = IntervalSchedule.objects.all().values()
 #task_list = IntervalSchedule.objects.values_list('id', flat=True).distinct()
 
-PERIOD_CHOICES = (('days', _('Days')),
-                  ('hours', _('Hours')),
-                  ('minutes', _('Minutes')),
-                  ('seconds', _('Seconds')),
-                  ('microseconds', _('Microseconds')))
+PERIOD_CHOICES = (('days', ('Days')),
+                  ('hours', ('Hours')),
+                  ('minutes', ('Minutes')),
+                  ('seconds', ('Seconds')),
+                  ('microseconds', ('Microseconds')))
 
 
 class ScheduleForm(forms.ModelForm):
     every = forms.IntegerField()
-    period = forms.CharField()
+    period = forms.ChoiceField(choices=PERIOD_CHOICES, required=True)
+    #period = forms.ModelChoiceField(queryset=IntervalSchedule.objects.all())
+    #period = forms.CharField()
     
     
     class Meta:

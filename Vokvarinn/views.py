@@ -71,7 +71,7 @@ def plant_detail_view(request, *argv, **kwargs):
 
 
 def plants_list_all_view(request):
-    print("[ plant_list_all_view ]IP Address for debug-toolbar: " + request.META['REMOTE_ADDR'])
+    # print("[ plant_list_all_view ]IP Address for debug-toolbar: " + request.META['REMOTE_ADDR'])
     # query = Plants.objects.all().order_by('id')
     # query = Plants.objects.order_by('id')
     # query = Plants.objects.values_list('name', flat=True)
@@ -192,4 +192,10 @@ def edit_schedule(request, **kwargs):
         'schedule': IntervalSchedule.objects.all(),
         'form': form,
     }
+    if request.method == 'POST':
+        #instance = get_object_or_404(IntervalSchedule, id=id)
+        form = ScheduleForm(request.POST)#, instance=instance)
+        # if form.is_valid():
+        form.save()
+        return HttpResponseRedirect('/')
     return render(request, 'Vokvarinn/edit_schedule.html', context)
