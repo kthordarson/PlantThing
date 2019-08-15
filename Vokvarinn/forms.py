@@ -4,11 +4,7 @@ from djcelery.models import IntervalSchedule
 import json
 
 from .models import Plants, PlantLog
-TASK_CHOICES = [
-    ('tassk1','krem1'),
-    ('task2','krem2'),
 
-]
 #tasks = IntervalSchedule.objects.all().values()
 #task_list = IntervalSchedule.objects.values_list('id', flat=True).distinct()
 
@@ -36,4 +32,4 @@ class PlantForm(forms.ModelForm):
     image = forms.ImageField()
     class Meta:
         model = Plants
-        fields = ['name', 'last_water', 'info_url', 'image', 'water_schedule']
+        fields = ['name', 'last_water', 'info_url', 'image',]# 'water_schedule']
