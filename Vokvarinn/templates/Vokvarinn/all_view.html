@@ -9,6 +9,7 @@
 	    <th scope="col">Last watered</th>
 	    <th scope="col">Plant information</th>
 	    <th scope="col">Watering schedule</th>
+	    <th>Actions</th>
 		</thead>
 		<tbody>
 			{% for item in table %}
@@ -29,6 +30,8 @@
 					<td>
 						{{ item.water_schedule }}
 					</td>
+					<td>
+						<a class="btn btn-primary" href="{% url 'plant_detail' item.pk %}" role="button">View</a>
 					</td>
 				</tr>
 			{% endfor %}
