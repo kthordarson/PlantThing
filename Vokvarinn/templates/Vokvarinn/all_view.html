@@ -22,7 +22,17 @@
 						{{ item.name }}
 					</td>
 					<td>
-						{{ item.last_water }}
+						<ul>
+							<li>
+								{{ item.last_water|date:"d. M y - H:i" }}
+								<ul>
+									{% for water in item.get_waterings %}
+								    <li>{{ water.last_water|date:"d. M y - H:i" }}</li>
+								{% endfor %}
+								</ul>
+								
+							</li>
+						</ul>
 					</td>
 					<td>
 						<a href="{{ item.info_url }}">Info</a>
