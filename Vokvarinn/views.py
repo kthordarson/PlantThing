@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.utils import timezone
 
-from .forms import PlantForm, Waterform
+from .forms import PlantForm, Waterform, ScheduleForm
 from .models import Plants, PlantLog
 from .tables import PlantTable, PlantLogTable
 from djcelery.models import PeriodicTask, PeriodicTasks, IntervalSchedule
@@ -186,9 +186,10 @@ def plant_edit_view(request, **kwargs):
     return render(request, 'Vokvarinn/plant_edit.html', context)
 
 def edit_schedule(request, **kwargs):
-
+    form = ScheduleForm
     context = {
 
-        'schedule': IntervalSchedule.objects.all()
+        'schedule': IntervalSchedule.objects.all(),
+        'form': form,
     }
     return render(request, 'Vokvarinn/edit_schedule.html', context)

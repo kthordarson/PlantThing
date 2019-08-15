@@ -1,6 +1,7 @@
 from django import forms
 from flatpickr import DateTimePickerInput
 from djcelery.models import IntervalSchedule
+from django.utils.translation import ugettext_lazy as _
 import json
 
 from .models import Plants, PlantLog
@@ -8,6 +9,24 @@ from .models import Plants, PlantLog
 #tasks = IntervalSchedule.objects.all().values()
 #task_list = IntervalSchedule.objects.values_list('id', flat=True).distinct()
 
+PERIOD_CHOICES = (('days', _('Days')),
+                  ('hours', _('Hours')),
+                  ('minutes', _('Minutes')),
+                  ('seconds', _('Seconds')),
+                  ('microseconds', _('Microseconds')))
+
+
+class ScheduleForm(forms.ModelForm):
+    every = forms.IntegerField()
+    period = forms.CharField()
+    
+    
+    class Meta:
+        model = IntervalSchedule
+        verbose_name = 'interval'
+        verbose_name_plural = 'intervals'
+        ordering = ['period', 'every']
+        fields = ['every', 'period']
 
 class DateTimeInput(forms.DateTimeInput):
     input_type = 'datetime'
