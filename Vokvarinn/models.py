@@ -3,6 +3,7 @@ from django.utils import timezone
 from imagekit.models import ImageSpecField
 from imagekit.processors import Transpose
 from djcelery.models import PeriodicTasks, PeriodicTask, IntervalSchedule
+#from .tables import PlantLogTable
 
 # Create your models here.
 class BaseModel(models.Model):
@@ -21,13 +22,20 @@ class Plants(BaseModel):
         processors=[Transpose()],
         format='JPEG'
     )
-
     class Meta:
         ordering = ['name']
         verbose_name_plural = "Plants"
 
+    def get_waterings(self):
+        return 0
+        #water_log = PlantLogTable(PlantLog.objects.filter(plant_id=self.id).order_by('-last_water'))
+
+
     def get_absolute_url(self):
         return '/plant/{0}/'.format(self.id)
+
+    def get_id(self):
+        return self.id
 
     def __unicode__(self):
         return self.name
@@ -46,6 +54,7 @@ class PlantLog(BaseModel):
 
     def get_plant_link(self):
         return '/plant/{0}'.format(self.plant.id)
+
     @property
     def plantlog_id(self):
         return self.id
