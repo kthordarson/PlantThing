@@ -7,6 +7,10 @@ body {
     background-size: cover;
 }
 
+.table.plant-table {
+    background:rgba(255,255,255, 0.8);
+}
+
 .crop {
         width: 300px;
         height: 300px;

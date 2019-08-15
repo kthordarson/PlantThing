@@ -1,9 +1,39 @@
 {% extends 'vokvarinn/base.html' %}
 {% block content %}
-<ul>
-{% for item in table %}
-    <li>{{ item.name }} {{ item.last_water }} {{ item.info_url }} {{ item.water_schedule }} {{ item.image }}  <img src="{{ item.image_thumbnail.url }}"></li>
-{% endfor %}
-</ul>
+
+<div class="container">
+	<table class="table plant-table">
+		<thead>
+			<th>Image</th>
+			<th scope="col">Name</th>
+	    <th scope="col">Last watered</th>
+	    <th scope="col">Plant information</th>
+	    <th scope="col">Watering schedule</th>
+		</thead>
+		<tbody>
+			{% for item in table %}
+				<tr>
+					<td>
+						<div class="crop">
+							<img class="round-image" src="{{ item.image_thumbnail.url }}">	
+						</div>
+					<td>
+						{{ item.name }}
+					</td>
+					<td>
+						{{ item.last_water }}
+					</td>
+					<td>
+						<a href="{{ item.info_url }}">Info</a>
+					</td>
+					<td>
+						{{ item.water_schedule }}
+					</td>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
 
 {% endblock %}
