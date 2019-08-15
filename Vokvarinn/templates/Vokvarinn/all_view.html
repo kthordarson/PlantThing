@@ -1,15 +1,9 @@
 {% extends 'vokvarinn/base.html' %}
-{% load render_table from django_tables2 %}
 {% block content %}
+<ul>
+{% for item in table %}
+    <li>{{ item.name }} {{ item.last_water }} {{ item.info_url }} {{ item.water_schedule }} {{ item.image }}  <img src="{{ item.image_thumbnail.url }}"></li>
+{% endfor %}
+</ul>
 
-<html>
-    <head>
-
-
-        <title>List of plants</title>
-    </head>
-    <body>
-        {% render_table table %}
-    </body>
-</html>
 {% endblock %}

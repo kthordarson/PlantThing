@@ -1,3 +1,5 @@
+# stjanidev
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
@@ -25,8 +27,11 @@ class DatatableView(DatatableView):
         return context
 
 def all_view(request):
-    print("[ all_view ] IP Address for debug-toolbar: " + request.META['REMOTE_ADDR'])
     table = Plants.objects.all().order_by('id')
+    for plant in table:
+        print (plant.name)
+        water_log = PlantLog.objects.filter(plant=plant)
+        print (water_log)
     # table = Plants.objects.values_list('name', flat=True)
     return render(request, 'Vokvarinn/all_view.html', {'table': table})
 

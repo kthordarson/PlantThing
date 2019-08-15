@@ -23,7 +23,7 @@ urlpatterns = [
     
 ]
 if settings.DEBUG:
-    print ('debug enabled....')
+    #print ('debug enabled....')
 
     import debug_toolbar
     urlpatterns = [
