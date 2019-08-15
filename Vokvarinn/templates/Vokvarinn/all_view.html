@@ -1,15 +1,49 @@
 {% extends 'vokvarinn/base.html' %}
-{% load render_table from django_tables2 %}
 {% block content %}
 
-<html>
-    <head>
+<div class="container">
+	<table class="table plant-table">
+		<thead>
+			<th>Image</th>
+			<th scope="col">Name</th>
+	    <th scope="col">Last watered</th>
+	    <th scope="col">Plant information</th>
+	    <th scope="col">Watering schedule</th>
+	    <th>Actions</th>
+		</thead>
+		<tbody>
+			{% for item in table %}
+				<tr>
+					<td>
+						<div class="crop">
+							<img class="round-image" src="{{ item.image_thumbnail.url }}">	
+						</div>
+					<td>
+						{{ item.name }}
+					</td>
+					<td>
+						<ul>
+							<li>
+						{{ item.last_water|date:"d. M y - H:i" }}
+						{% for water in item.get_waterings %}
+						    <li>{{ water.last_water|date:"d. M y - H:i" }}</li>
+						{% endfor %}
+							</li>
+						</ul>
+					</td>
+					<td>
+						<a href="{{ item.info_url }}">Info</a>
+					</td>
+					<td>
+						{{ item.water_schedule }}
+					</td>
+					<td>
+						<a class="btn btn-primary" href="{% url 'plant_detail' item.pk %}" role="button">View</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
 
-
-        <title>List of plants</title>
-    </head>
-    <body>
-        {% render_table table %}
-    </body>
-</html>
 {% endblock %}
