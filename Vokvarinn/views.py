@@ -29,6 +29,8 @@ class DatatableView(DatatableView):
 def all_view(request):
     print("[ all_view ] IP Address for debug-toolbar: " + request.META['REMOTE_ADDR'])
     table = Plants.objects.all().order_by('id')
+    for plant in table:
+        print (plant.name)
     # table = Plants.objects.values_list('name', flat=True)
     return render(request, 'Vokvarinn/all_view.html', {'table': table})
 
