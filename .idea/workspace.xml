@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b89805bc-f7be-4797-9382-3354a5f28756" name="Default Changelist" comment="workspace">
-      <change afterPath="$PROJECT_DIR$/Vokvarinn/templates/navbar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Vokvarinn/templates/Vokvarinn/all_view.html" beforeDir="false" afterPath="$PROJECT_DIR$/Vokvarinn/templates/Vokvarinn/all_view.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Vokvarinn/templates/Vokvarinn/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/Vokvarinn/templates/Vokvarinn/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Vokvarinn/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Vokvarinn/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Vokvarinn/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Vokvarinn/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
     <list id="ee35eaa1-96f5-449d-9f96-36dcc1f3705a" name="Default Changelist1" comment="" />
