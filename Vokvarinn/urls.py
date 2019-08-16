@@ -16,7 +16,6 @@ urlpatterns = [
     path('plant/delete<int:pk>', views.plant_delete, name='plant_delete'),
     path('plant/viewlog', views.plant_view_waterlog, name='plant_view_waterlog'),
     path('edit_schedule', views.edit_schedule, name='edit_schedule'),
-    path('datatable', views.DatatableView.as_view(), name='ZeroConfigurationDatatableView'),
 ]
 
 if settings.DEBUG:  # new

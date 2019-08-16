@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'background_task',
     'datetimepicker',
     'flatpickr',
-    'datatableview',
 ]
 
 MIDDLEWARE = [

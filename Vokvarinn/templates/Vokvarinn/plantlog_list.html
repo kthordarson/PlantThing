@@ -1,21 +1,4 @@
 {% load static %}
-<!-- myapp/mymodel_list.html -->
 
-<!-- Load dependencies -->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
-<!-- Load js for initializing tables via their server-side options -->
-<script type="text/javascript" charset="utf8" src="{% static 'js/datatableview.js' %}"></script>
-<script type="text/javascript">
-    var opts = {};
-    // var datatable = datatableview.initialize($('.datatable'), opts);
-    var datatable = $('#context').dataTable();
-    var table = datatable.api();
-</script>
-
-<!-- Render the table skeleton, includes the .datatable class for the on-ready initializer. -->
 {{ datatable }}
