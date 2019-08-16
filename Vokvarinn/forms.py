@@ -1,6 +1,11 @@
 from django import forms
 from flatpickr import DateTimePickerInput
-from djcelery.models import IntervalSchedule
+try:
+    from djcelery.models import PeriodicTasks, PeriodicTask, IntervalSchedule
+except:
+    print ("djcelery import error....")
+    pass
+
 from django.utils.translation import ugettext_lazy as _
 import json
 
@@ -24,7 +29,10 @@ class ScheduleForm(forms.ModelForm):
     
     
     class Meta:
-        model = IntervalSchedule
+        try:
+            model = IntervalSchedule
+        except:
+            pass
         verbose_name = 'interval'
         verbose_name_plural = 'intervals'
         ordering = ['period', 'every']
@@ -49,7 +57,10 @@ class PlantForm(forms.ModelForm):
     name = forms.CharField()
     last_water = forms.DateTimeField(widget=DateTimePickerInput())
     info_url = forms.URLInput()
-    water_schedule = forms.Select(choices=list(IntervalSchedule.objects.values_list('id', 'every', 'period')))
+    try:
+        water_schedule = forms.Select(choices=list(IntervalSchedule.objects.values_list('id', 'every', 'period')))
+    except:
+        pass
     image = forms.ImageField()
     class Meta:
         model = Plants

@@ -9,7 +9,11 @@ from django.utils import timezone
 from .forms import PlantForm, Waterform, ScheduleForm
 from .models import Plants, PlantLog
 from .tables import PlantTable, PlantLogTable
-from djcelery.models import PeriodicTask, PeriodicTasks, IntervalSchedule
+try:
+    from djcelery.models import PeriodicTasks, PeriodicTask, IntervalSchedule
+except:
+    print ("djcelery import error....")
+    pass
 from datatableview.views import DatatableView
 from django_tables2 import RequestConfig
 

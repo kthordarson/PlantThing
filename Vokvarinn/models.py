@@ -2,7 +2,12 @@ from django.db import models
 from django.utils import timezone
 from imagekit.models import ImageSpecField
 from imagekit.processors import Transpose
-from djcelery.models import PeriodicTasks, PeriodicTask, IntervalSchedule
+try:
+    from djcelery.models import PeriodicTasks, PeriodicTask, IntervalSchedule
+except:
+    print ("djcelery import error....")
+    pass
+
 #from .tables import PlantLogTable
 from datetime import date, timedelta
 
