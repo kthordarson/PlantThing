@@ -8,3 +8,5 @@ Vokvarinn/migrations/*
 Vokvarinn/migrations/0001_initial.py
 Vokvarinn/migrations/0001_initial.py
 media/*
+.idea/*
+
