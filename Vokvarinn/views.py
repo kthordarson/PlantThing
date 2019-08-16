@@ -111,7 +111,7 @@ def plant_create_view(request):
             # return render(request, 'Vokvarinn/plant_create')
             # handle_uploaded_file(request.FILES['file'])
             # print("Form error: ", form.errors)
-            return redirect('plants_list_all_view')
+            return redirect('all_view')
         else:
             print("Form error: ", form.errors)
             context = {'form': form,
