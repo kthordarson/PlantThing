@@ -6,13 +6,7 @@ except:
     print ("djcelery import error....")
     pass
 
-from django.utils.translation import ugettext_lazy as _
-import json
-
 from .models import Plants, PlantLog
-
-#tasks = IntervalSchedule.objects.all().values()
-#task_list = IntervalSchedule.objects.values_list('id', flat=True).distinct()
 
 PERIOD_CHOICES = (('days', ('Days')),
                   ('hours', ('Hours')),
@@ -24,10 +18,7 @@ PERIOD_CHOICES = (('days', ('Days')),
 class ScheduleForm(forms.ModelForm):
     every = forms.IntegerField()
     period = forms.ChoiceField(choices=PERIOD_CHOICES, required=True)
-    #period = forms.ModelChoiceField(queryset=IntervalSchedule.objects.all())
-    #period = forms.CharField()
-    
-    
+
     class Meta:
         try:
             model = IntervalSchedule
@@ -38,21 +29,14 @@ class ScheduleForm(forms.ModelForm):
         ordering = ['period', 'every']
         fields = ['every', 'period']
 
-class DateTimeInput(forms.DateTimeInput):
-    input_type = 'datetime'
-
-
-class DateInput(forms.DateInput):
-    input_type = 'date'
-
 class Waterform(forms.ModelForm):
-    #amount = forms.IntegerField()
     plant = forms.ModelChoiceField(widget=forms.HiddenInput(), queryset=Plants.objects.all())
     last_water = forms.DateTimeField(widget=forms.HiddenInput())
     amount = forms.IntegerField()
     class Meta:
         model  = PlantLog
         fields = ['amount']
+
 class PlantForm(forms.ModelForm):
     name = forms.CharField()
     last_water = forms.DateTimeField(widget=DateTimePickerInput())

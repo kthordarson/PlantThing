@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'beatserver',
     'django_celery_results',
     'django_celery_beat',
-    'background_task',
     'datetimepicker',
     'flatpickr',
 ]

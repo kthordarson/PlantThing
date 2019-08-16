@@ -10,7 +10,6 @@ urlpatterns = [
     path('plant/all/', views.all_view, name='all_view'),
     path('plant/<int:pk>', views.plant_detail_view, name='plant_detail'),
     path('plant/<int:pk>/water', views.plant_water_view, name='plant_water_view'),
-    path('plant/do_water/<int:pk>/', views.plant_do_water, name='plant_do_water'),
     path('plant/<int:pk>/edit/', views.plant_edit_view, name='plant_edit_view'),
     path('plant/create', views.plant_create_view, name='plant_create_view'),
     path('plant/delete<int:pk>', views.plant_delete, name='plant_delete'),

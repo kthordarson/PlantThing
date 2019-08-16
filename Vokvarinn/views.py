@@ -18,16 +18,16 @@ from django_tables2 import RequestConfig
 
 
 def all_view(request, **kwargs):
+    print ("all_view ...")
     table = Plants.objects.all().order_by('id')
     if kwargs:
         plant_id = (kwargs['pk'])
 
     if request.method == 'POST':
-        instance = get_object_or_404(Plants, id=plant_id)
-        form = Waterform(request.POST, instance=instance)
-        context = {
-            'form' : form,
-        }
+        print ("all_view POST")
+        #instance = get_object_or_404(Plants, id=plant_id)
+        form = Waterform(request.POST)#, instance=instance)
+        print ("all_view FORM ", form)
         if form.is_valid():
             #form.save()
             plant_do_water(plant_id, form.cleaned_data.get('amount'))
@@ -44,7 +44,7 @@ def all_view(request, **kwargs):
 
 
 def plant_detail_view(request, *argv, **kwargs):
-    print(request)
+    print("plant_detail_view request: ", request)
     for arg in argv:
         print("plant_detail_view arg passed: " + arg)
     for key, value in kwargs.items():

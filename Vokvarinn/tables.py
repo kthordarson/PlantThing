@@ -39,16 +39,3 @@ class PlantLogTable(tables.Table):
         sequence = ('last_water', 'plant', 'amount')
         template_name = 'django_tables2/bootstrap.html'
 
-class PlantLogTable_OLD(tables.Table):
-    # id = tables.LinkColumn('plant_detail', args=[A('pk')])
-
-    #plant = tables.LinkColumn('plant_detail', args=[A('pk')])
-    #last_water = tables.DateTimeColumn(format="d-m-Y H:i:s")
-    plant = tables.Column()
-    last_water = tables.Column()
-    class Meta:
-        model = PlantLog
-        fields = {
-            'last_water', 'plant_id', 'plant', 'amount'
-        }
-        template_name = 'django_tables2/bootstrap.html'

@@ -46,7 +46,7 @@
   <div class="two"><a class="btn btn-primary btn-sm" href="{% url 'plant_edit_view' item.pk %}" role="button">Edit</a></div>
   <div class="three"><a class="btn btn-danger btn-sm" href="{% url 'plant_delete' item.pk %}" role="button">Delete</a></div>
   <div class="four">
-      <form method="POST" action="/plant/{{ item.id }}/water" enctype='multipart/form-data'> {% csrf_token %}
+      <form method="POST" action='{{ action_url }}' enctype='multipart/form-data'> {% csrf_token %}
     {{ waterform.as_p }}
       </div>
   <div class="five"><input type="submit" value="Amount" /></div>
