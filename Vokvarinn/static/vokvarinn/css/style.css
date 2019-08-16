@@ -1,0 +1,32 @@
+li a {
+    color: green;
+}
+body {
+    background: white url("../images/bg1.jpg") no-repeat;
+    background-position: right center;
+    background-size: cover;
+}
+
+.table.plant-table {
+    background:rgba(255,255,255, 0.8);
+}
+
+.crop {
+        width: 150px;
+        height: 150px;
+        overflow: hidden;
+        border-radius: 50%;
+        border: 5px solid #18392B;
+        transition: ease-in .2s;
+    }
+
+    .crop .round-image {
+        width: 150px;
+        height: auto;
+    }
+
+    .crop:hover {
+         -webkit-transform: scale(0.8);
+        -ms-transform: scale(0.8);
+        transform: scale(0.8);
+    }

@@ -1,7 +1,9 @@
 {% extends 'vokvarinn/base.html' %}
 {% block content %}
 
-<div class="container">
+
+
+<div class="container-fluid">
 	<table class="table plant-table">
 		<thead>
 			<th>Image</th>
@@ -38,7 +40,13 @@
 						{{ item.water_schedule }}
 					</td>
 					<td>
-						<a class="btn btn-primary" href="{% url 'plant_detail' item.pk %}" role="button">View</a>
+						<a class="btn btn-primary btn-sm" href="{% url 'plant_detail' item.pk %}" role="button">View</a>
+					</td>
+					<td>
+						<a class="btn btn-primary btn-sm" href="{% url 'plant_edit_view' item.pk %}" role="button">Edit</a>
+					</td>
+					<td>
+						<a class="btn btn-danger btn-sm" href="{% url 'plant_delete' item.pk %}" role="button">Delete</a>
 					</td>
 				</tr>
 			{% endfor %}

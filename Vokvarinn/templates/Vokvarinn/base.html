@@ -15,18 +15,19 @@
   crossorigin="anonymous"></script>
         <script src="{% static 'vokvarinn/js/bootstrap.min.js' %}"></script>
 
-      <title>PlantThing</title>
-  </head>
-  <body>
-    <div class="container-fluid">
-      <div class="row justify-content-md-center">
-        <div class="col-8">
-          <h1 class="mt-2"><a href="/">Plant Thing</a></h1>
-          <hr class="mt-0 mb-4">
-          {% block content %}
-          {% endblock %}
-        </div>
-      </div>
+
+
+<header>
+    <div class="container">
+         {% include "navbar.html" %}
     </div>
+</header>
+      <body>
+
+<div class="container">
+{% block content %}Nothing Here{% endblock %}
+</div>
   </body>
 </html>
+
+

@@ -166,6 +166,9 @@ def plant_view_waterlog(request):
     }
     return render(request, 'Vokvarinn/waterlog.html', context)
 
+def plant_delete(self, **kwargs):
+    Plants.objects.get(id = kwargs['pk']).delete()
+    return HttpResponseRedirect('/')
 
 def plant_edit_view(request, **kwargs):
     tasks = IntervalSchedule.objects.all()
