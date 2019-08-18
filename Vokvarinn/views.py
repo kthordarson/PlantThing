@@ -15,8 +15,8 @@ except:
     print ("djcelery import error....")
     pass
 from django_tables2 import RequestConfig
-
-
+from .imagedata import ImageMetaData
+import datetime
 def all_view(request, **kwargs):
     print ("all_view ...")
     table = Plants.objects.all().order_by('id')
@@ -46,6 +46,11 @@ def plant_detail_view(request, *argv, **kwargs):
     plant = Plants.objects.get(id=plant_id)
     now_aware = timezone.now()
     time_since = now_aware - plant.last_water
+    imgdata = ImageMetaData(plant.image)
+    imgexif = imgdata.get_exif_data() # DateTimeDigitized
+    imgdate = imgexif['DateTime']
+    print ("image date: ", imgdate)
+    #datetime.datetime.strptime(datetime_str,,'%Y:%m:%d %H:%M:%S')
     task_selected = IntervalSchedule.objects.get(pk=plant.water_schedule.id)
     water_log = PlantLogTable(PlantLog.objects.filter(plant_id=plant_id).order_by('-last_water'))
     data = {'plant': plant, 'last_water': plant.last_water, 'info_url': plant.info_url, 'image': plant.image,
@@ -58,6 +63,7 @@ def plant_detail_view(request, *argv, **kwargs):
         'time_now': now_aware,
         'water_log': water_log,
         'water_form': water_form,
+        'imgdate' : imgdate,
     }
 
     if request.method == 'POST':
