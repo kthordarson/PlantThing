@@ -40,20 +40,10 @@
 						{{ item.water_schedule }}
 					</td>
 					<td>
-                    <div class="container">
-<div class="wrapper">
-  <div class="one"><a class="btn btn-primary btn-sm" href="{% url 'plant_detail' item.pk %}" role="button">View</a></div>
-  <div class="two"><a class="btn btn-primary btn-sm" href="{% url 'plant_edit_view' item.pk %}" role="button">Edit</a></div>
-  <div class="three"><a class="btn btn-danger btn-sm" href="{% url 'plant_delete' item.pk %}" role="button">Delete</a></div>
-  <div class="four">
-      <form method="POST" action='{{ action_url }}' enctype='multipart/form-data'> {% csrf_token %}
-    {{ waterform.as_p }}
-      </div>
-  <div class="five"><input type="submit" value="Amount" /></div>
-</form>
-
-  </div>
-</div>
+						<a class="btn btn-primary btn-sm" href="{% url 'plant_detail' item.pk %}" role="button">View</a>
+						<a class="btn btn-primary btn-sm" href="{% url 'plant_edit_view' item.pk %}" role="button">Edit</a>
+						<a class="btn btn-danger btn-sm" href="{% url 'plant_delete' item.pk %}" role="button">Delete</a>
+						{% csrf_token %}
 					</td>
                     </tr>
 			{% endfor %}

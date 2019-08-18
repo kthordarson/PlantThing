@@ -22,17 +22,6 @@ def all_view(request, **kwargs):
     table = Plants.objects.all().order_by('id')
     if kwargs:
         plant_id = (kwargs['pk'])
-
-    if request.method == 'POST':
-        print ("all_view POST")
-        #instance = get_object_or_404(Plants, id=plant_id)
-        form = Waterform(request.POST)#, instance=instance)
-        print ("all_view FORM ", form)
-        if form.is_valid():
-            #form.save()
-            plant_do_water(plant_id, form.cleaned_data.get('amount'))
-            return render(request, "vokvarinn/plant_detail.html", context)
-
     #data = {'plant': plant,}
     waterform = Waterform()
     context = {
@@ -115,14 +104,22 @@ def plant_create_view(request):
         return render(request, 'Vokvarinn/plant_create.html', context)
 
 
-def plant_do_water(plant_id, amount):
+def plant_do_water(plant_id, amount, *args, **kwargs):
+    print ("plant_do_water name: {} amount: {}".format(plant_id, amount))
+    if args:
+        print ("plant_do_water args: ", args)
+    if kwargs:
+        print ("plant_do_water kwargs: ", kwargs)
     # takes id and creates log entry
-    now_aware = timezone.now()
-    Plants.objects.filter(id=plant_id).update(last_water=now_aware)
-    log = PlantLog(last_water=now_aware, plant_id=plant_id, amount=amount)
-    print("plant_do_water: ", log)
-    print ("plant_do_water amount: ", amount)
-    log.save(force_insert=True)
+    if kwargs:
+        plant_id = (kwargs['pk'])
+    if amount > 1:
+        now_aware = timezone.now()
+        Plants.objects.filter(id=plant_id).update(last_water=now_aware)
+        log = PlantLog(last_water=now_aware, plant_id=plant_id, amount=amount)
+        print("plant_do_water: ", log)
+        print ("plant_do_water amount: ", amount)
+        log.save(force_insert=True)
 
     return 0
 

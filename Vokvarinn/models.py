@@ -37,7 +37,7 @@ class Plants(BaseModel):
         #startdate = date.today()
         #enddate = startdate + timedelta(days=6)
         # Sample.objects.filter(date__range=[startdate, enddate])
-        water_log = PlantLog.objects.filter(plant_id=self.id).order_by('-last_water')[2:10]
+        water_log = PlantLog.objects.filter(plant_id=self.id).order_by('-last_water')[2:5]
         #water_log = PlantLog.objects.filter(last_water__range=[startdate, enddate]).order_by('-last_water')[2:10]
         return water_log
         #water_log = PlantLogTable(PlantLog.objects.filter(plant_id=self.id).order_by('-last_water'))
