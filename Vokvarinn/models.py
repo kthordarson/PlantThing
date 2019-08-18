@@ -7,6 +7,7 @@ try:
 except:
     print ("djcelery import error....")
     pass
+from .imagedata import ImageMetaData
 
 #from .tables import PlantLogTable
 from datetime import date, timedelta
@@ -69,6 +70,25 @@ class PlantLog(BaseModel):
 
     @property
     def plantlog_id(self):
+        return self.id
+
+    def __unicode__(self):
+        return str(self.id)
+
+    def __str__(self):
+        return str(self.plant)
+
+class Images(BaseModel):
+    plant = models.ForeignKey(Plants, default=1, on_delete=models.SET_DEFAULT, verbose_name='Images')
+    image = models.ImageField(null=True, blank=True, upload_to="static/plant_images/", verbose_name="Image")
+
+    class Meta:
+        verbose_name_plural='Images'
+
+    def get_date(self):
+        return 0
+    @property
+    def image_id(self):
         return self.id
 
     def __unicode__(self):
