@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Plants, PlantLog
+from .models import Plants, PlantLog# , PlantImages
 
 
 # Register your models here.
@@ -20,6 +20,9 @@ class PlantLogAdmin(admin.ModelAdmin):
     fields = [('plant', 'last_water', 'amount')]
     list_display = ('plant', 'last_water', 'amount')
 
+class PlantImageAdmin(admin.ModelAdmin):
+    fields = [('plant', 'image')]
+    list_display = ('plant', 'image')
 
 class MyModelAdmin(admin.ModelAdmin):
     def get_form(self, request, obj=None, **kwargs):
@@ -30,4 +33,5 @@ class MyModelAdmin(admin.ModelAdmin):
 
 admin.site.register(Plants, PlantsAdmin)
 admin.site.register(PlantLog, PlantLogAdmin)
+#admin.site.register(PlantImages, PlantImageAdmin)
 # admin.site.register(Plants, MyModelAdmin)

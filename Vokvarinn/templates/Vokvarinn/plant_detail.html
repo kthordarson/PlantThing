@@ -7,7 +7,7 @@ plant detail info<br>
 <br>
 
 <form method="POST" action='{{ action_url }}' enctype='multipart/form-data'> {% csrf_token %}
-    {{ water_form }}
+    {{ water_form.as_p }}
     <input class="btn btn-primary" type="submit" value="Water" />
 </form>
 <form action="/plant/{{ plant.id }}/edit"><input type="submit" Value="Edit" class="btn btn-secondary"></form>
@@ -21,10 +21,17 @@ Time diff: {{ time_since_water|smooth_timedelta }}
 <br>
 Image:
 <br>
-<img height="300" width="300" src ="{{ plant.image_thumbnail.url }}">
+<img height="300" width="300" src ="{{ plant.image.url }}">
 <br>
 <h5>Image date {{ imgdate }}</h5>
 <br>
 {% render_table water_log %}
+<br>
 
+<ul>
+    <h3>images</h3>
+{% for images in plant_images %}
+    <li>{{ plant_imagesimg }} <img height="300" width="300" src ="{{ plant_images.image }}"></li>
+{% endfor %}
+</ul>
 {% endblock %}

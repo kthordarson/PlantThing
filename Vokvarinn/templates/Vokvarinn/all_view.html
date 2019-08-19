@@ -18,7 +18,7 @@
 				<tr>
 					<td>
 						<div class="crop">
-							<img class="round-image" src="{{ item.image_thumbnail.url }}">	
+							<img class="round-image" src="{{ item.image.url }}">
 						</div>
 					<td>
 						{{ item.name }}
@@ -43,7 +43,7 @@
 						<a class="btn btn-primary btn-sm" href="{% url 'plant_detail' item.pk %}" role="button">View</a>
 						<a class="btn btn-primary btn-sm" href="{% url 'plant_edit_view' item.pk %}" role="button">Edit</a>
 						<a class="btn btn-danger btn-sm" href="{% url 'plant_delete' item.pk %}" role="button">Delete</a>
-						{% csrf_token %}
+
 					</td>
                     </tr>
 			{% endfor %}

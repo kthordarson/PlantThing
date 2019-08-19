@@ -24,7 +24,7 @@
             <td><a href="/plant/{{ plant.id }}">{{ plant.name }}</a></td>
             <td><a href="/plant/{{ plant.id }}">{{ plant.last_water|date:"d. M y - H:i" }}</a></td>
             <td><a href="{{ plant.info_url }}">{{ plant.info_url }}</a></td>
-            <td><a href="/plant/{{ plant.id }}"><img width="300" height="300" src ="{{ plant.image_thumbnail.url }}"></a></td>
+            <td><a href="/plant/{{ plant.id }}"><img width="300" height="300" src ="{{ plant.image }}">{{ plant.image }}</a></td>
             <td><form action="/plant/{{ plant.id }}/water"><input type="submit" Value="Water"></form></td>
             <td><a href="/plant/{{ plant.id }}/edit">edit</a></td>
         </tr>

@@ -6,17 +6,14 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.utils import timezone
 
-from .forms import PlantForm, Waterform, ScheduleForm
-from .models import Plants, PlantLog
+from .forms import PlantCreateForm, Waterform, ScheduleForm, ImageForm
+from .models import Plants, PlantLog, PlantImages
 from .tables import PlantTable, PlantLogTable
-try:
-    from djcelery.models import PeriodicTasks, PeriodicTask, IntervalSchedule
-except:
-    print ("djcelery import error....")
-    pass
+from djcelery.models import PeriodicTasks, PeriodicTask, IntervalSchedule
 from django_tables2 import RequestConfig
 from .imagedata import ImageMetaData
 import datetime
+import os
 def all_view(request, **kwargs):
     print ("all_view ...")
     table = Plants.objects.all().order_by('id')
@@ -44,11 +41,15 @@ def plant_detail_view(request, *argv, **kwargs):
         print ("plant_detail_view plant id is 1 ! ")
         plant_id = 1
     plant = Plants.objects.get(id=plant_id)
+    #plant_images = PlantImages.objects.filter(id=plant_id)
     now_aware = timezone.now()
     time_since = now_aware - plant.last_water
-    imgdata = ImageMetaData(plant.image)
-    imgexif = imgdata.get_exif_data() # DateTimeDigitized
-    imgdate = imgexif['DateTime']
+    try:
+        imgdata = ImageMetaData(plant.image)
+        imgexif = imgdata.get_exif_data()  # DateTimeDigitized
+        imgdate = imgexif['DateTime']
+    except:
+        imgdate = datetime.datetime.now()
     print ("image date: ", imgdate)
     #datetime.datetime.strptime(datetime_str,,'%Y:%m:%d %H:%M:%S')
     task_selected = IntervalSchedule.objects.get(pk=plant.water_schedule.id)
@@ -64,6 +65,7 @@ def plant_detail_view(request, *argv, **kwargs):
         'water_log': water_log,
         'water_form': water_form,
         'imgdate' : imgdate,
+#        'plant_images' : plant_images,
     }
 
     if request.method == 'POST':
@@ -86,26 +88,50 @@ def plants_list_all_view(request):
     }
     return render(request, 'Vokvarinn/all_plants.html', context)
 
+def insert_image(plant,image):
+    # insert imange to database
+    #image_to_insert = imageform.cleaned_data['image']
+    print ("[insert_image] plant {}".format(plant))
+    print ("[insert_image] image {}".format(image))
+    #new_image = PlantImages(plant_id=plant.id, image=image)
+    #Plants.objects.filter(id=plant.id).update(image=image)
+    new_image = PlantImages(plant=plant,image=image)
+    print ("[insert_image] new_image {} ".format(new_image))
+    result = new_image.save(force_insert=True)
+    print ("[insert_image] result {} ".format(result))
+#newdoc = Document(docfile = request.FILES['docfile'])
+#        Plants.objects.filter(id=plant_id).update(last_water=now_aware)
+#        log = PlantLog(last_water=now_aware, plant_id=plant_id, amount=amount)
 
-def plant_create_view(request):
+def create_new_plant_view(request):
     tasks = IntervalSchedule.objects.all()
-    print ("plant_create_view tasks: ", tasks)
     if request.method == 'POST':
-        form = PlantForm(request.POST, request.FILES)
-        print("Inserting new plant: ", form['name'].value())
-        if form.is_valid():
-            form.save()
-            # return render(request, 'Vokvarinn/plant_create')
-            # handle_uploaded_file(request.FILES['file'])
-            # print("Form error: ", form.errors)
+        post_data = request.POST
+        post_files = request.FILES
+        plantform = PlantCreateForm(post_data)
+
+        print("[create_new_plant] name: {} ". format(plantform['name'].value()))
+        if plantform.is_valid():
+            new_plant = plantform.save()
+            imageform = ImageForm(post_data, post_files, instance=new_plant)
+            print('[create_new_plant] plantform result {}'.format(new_plant))
+            #imageform['plant'] = new_plant
+            #imageform.fields['plant'] = new_plant
+            if imageform.is_valid():
+                new_image = imageform.save()
+                print('[plant_create_view] imageform result {}'.format(new_image))
+            else:
+                print("[plant_create_view] imageform invalid {}".format(imageform.errors))
             return redirect('all_view')
         else:
-            print("Form error: ", form.errors)
-            context = {'form': form,
+            print("[plant_create_view] plantform error: {}".format(plantform.errors))
+            context = {'plantform': plantform,
+                       'imageform': imageform,
                        'tasks': tasks}
             return render(request, 'Vokvarinn/plant_create.html', context)
     else:
-        context = {'form': PlantForm,
+        context = {'plantform': PlantCreateForm,
+                   'imageform' : ImageForm,
                    'tasks': tasks}
         return render(request, 'Vokvarinn/plant_create.html', context)
 
@@ -183,33 +209,51 @@ def plant_delete(self, **kwargs):
     return HttpResponseRedirect('/')
 
 def plant_edit_view(request, **kwargs):
-    print ("plant_edit_view .... ")
     tasks = IntervalSchedule.objects.all()
     plant_id = str(kwargs['pk'])
     plant = Plants.objects.get(pk=plant_id)
     water_log = PlantLog.objects.filter(plant_id=plant_id)
     task_selected = IntervalSchedule.objects.get(pk=plant.water_schedule.id)
-    print ("[ plant_edit_view ] tasks ", tasks)
-    print ("[ plant_edit_view ] selected ", task_selected)
-    data = {'name': plant.name, 'last_water': plant.last_water, 'info_url': plant.info_url, 'image': plant.image, 'water_schedule': task_selected, }
-    print ("[ plant_edit_view ] ",data)
+    data = {'name': plant.name, 'last_water': plant.last_water, 'info_url': plant.info_url, 'image': plant.image, 'water_schedule': task_selected, 'plant':plant,}
+
+    # DEBUG
+    print ("[ plant_edit_view ] data ",data)
+
     if request.method == 'POST':
+        post_data = request.POST
+        file_data = request.FILES
         instance = get_object_or_404(Plants, id=plant_id)
-        form = PlantForm(request.POST, request.FILES, instance=instance)
-        # if form.is_valid():
-        form.save()
-        return HttpResponseRedirect('/')
+        plant = Plants.objects.get(pk=plant_id)
+        # img_instance = get_object_or_404(Plants, plant=plant)
+        plantform = PlantCreateForm(post_data, file_data, instance=instance)
+        imageform = ImageForm(post_data, file_data, instance=instance)
+        if imageform.is_valid():
+            print ('[plant_edit_view] imageform valid...')
+            imgedit = imageform.save()
+            print ('[plant_edit_view] imageform saved: {} '.format(imgedit))
+            #newdoc = Document(docfile = request.FILES['docfile'])
+            #image_to_insert = PlantImages(plant=plant,image = file_data)
+            #image_to_insert.save()
+            #insert_image(plant, image_to_insert)
+        else:
+            print ("[ plant_edit_view ] imageform is INVALID error: {} ". format(imageform.errors))
+        if plantform.is_valid():
+            plant_edit = plantform.save()
+            print ("[plant_edit_view] edit {} ".format(plant_edit))
+            return HttpResponseRedirect('/')
     else:
-        form = PlantForm(initial=data)
+        plantform = PlantCreateForm(initial=data)
+        imageform = ImageForm(initial=data)
     context = {
         'plants': plant,
-        'form': form,
+        'plantform': plantform,
+        'imageform' : imageform,
         'water_log': water_log,
     }
 
     return render(request, 'Vokvarinn/plant_edit.html', context)
 
-def edit_schedule(request, **kwargs):
+def edit_schedule_view(request, **kwargs):
     print ("edit_schedule ....")
     form = ScheduleForm
     context = {
@@ -220,7 +264,7 @@ def edit_schedule(request, **kwargs):
     if request.method == 'POST':
         #instance = get_object_or_404(IntervalSchedule, id=id)
         form = ScheduleForm(request.POST)#, instance=instance)
-        # if form.is_valid():
-        form.save()
-        return HttpResponseRedirect('/')
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
     return render(request, 'Vokvarinn/edit_schedule.html', context)

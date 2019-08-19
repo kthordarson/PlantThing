@@ -5,13 +5,14 @@
 <h1>{{ plants.name }}</h1>
 <br>
 <form method="POST" action='{{ action_url }}' enctype='multipart/form-data'> {% csrf_token %}
-    {{ form.as_p }}
+    {{ plantform.as_p }}
+    {{ imageform.as_p }}
     <input type="submit" value="Save" />
     <input class="button" type="button" onclick="window.location.replace('/')" value="Cancel" />
 </form>
 <br>
     image:<br>
-<img height="300" width="300" src ="{{ plants.image_thumbnail.url }}">
+<img height="300" width="300" src ="{{ plants.image.url }}">
     <li>{{ results }}</li>
 
 <ul>
