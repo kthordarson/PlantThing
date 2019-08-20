@@ -1,7 +1,10 @@
 from django import forms
 from flatpickr import DateTimePickerInput
 from django.utils import timezone
-from djcelery.models import PeriodicTasks, PeriodicTask, IntervalSchedule
+try:
+    from djcelery.models import PeriodicTasks, PeriodicTask, IntervalSchedule
+except:
+    pass
 
 from .models import Plants, PlantLog, PlantImages
 
@@ -39,7 +42,10 @@ class PlantCreateForm(forms.ModelForm):
     name = forms.CharField()
     last_water = forms.DateTimeField(widget=DateTimePickerInput(), required=False)
     info_url = forms.URLInput()
-    water_schedule = forms.Select(choices=list(IntervalSchedule.objects.values_list('id', 'every', 'period')))
+    try:
+        water_schedule = forms.Select(choices=list(IntervalSchedule.objects.values_list('id', 'every', 'period')))
+    except:
+        pass
     # image = forms.ImageField()
     class Meta:
         model = Plants
@@ -50,7 +56,8 @@ class PlantCreateForm(forms.ModelForm):
         self.fields['last_water'].initial = timezone.now
 
 class ImageForm(forms.ModelForm):
-    plant = forms.ModelChoiceField(widget=forms.HiddenInput(), queryset=Plants.objects.all())
+    # plant = forms.ModelChoiceField(widget=forms.HiddenInput(), queryset=Plants.objects.all())
+    plant = forms.ModelChoiceField(queryset=Plants.objects.all(), required=False)
     #id = forms.IntegerField(widget=forms.HiddenInput())
     image = forms.ImageField(required=False, label='Select image', help_text='Choose an image')
     class Meta:

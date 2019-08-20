@@ -30,18 +30,11 @@ def all_view(request, **kwargs):
 
 
 def plant_detail_view(request, *argv, **kwargs):
-    print("plant_detail_view request: ", request)
-    for arg in argv:
-        print("plant_detail_view arg passed: " + arg)
-    for key, value in kwargs.items():
-        print("plant_detail_view kwarg passed: key " + key + " value " + str(value))
-    if kwargs:
-        plant_id = (kwargs['pk'])
-    else:
-        print ("plant_detail_view plant id is 1 ! ")
-        plant_id = 1
+    print("[plant_detail_view request] ", request)
+    plant_id = (kwargs['pk'])
     plant = Plants.objects.get(id=plant_id)
-    #plant_images = PlantImages.objects.filter(id=plant_id)
+    plant_images = PlantImages.objects.filter(plant=plant)
+    print ('[plant_detail_view] images \n {}'.format(plant_images))
     now_aware = timezone.now()
     time_since = now_aware - plant.last_water
     try:
@@ -65,7 +58,7 @@ def plant_detail_view(request, *argv, **kwargs):
         'water_log': water_log,
         'water_form': water_form,
         'imgdate' : imgdate,
-#        'plant_images' : plant_images,
+        'plant_images' : plant_images,
     }
 
     if request.method == 'POST':
@@ -103,25 +96,61 @@ def insert_image(plant,image):
 #        Plants.objects.filter(id=plant_id).update(last_water=now_aware)
 #        log = PlantLog(last_water=now_aware, plant_id=plant_id, amount=amount)
 
+def add_new_image(request):
+    # add image to db
+    if request.method == 'POST':
+        imageform = ImageForm(request.POST, request.FILES)
+        print("[add_new_image]\n post {} \n files {} ".format(request.POST, request.FILES))
+        if imageform.is_valid():
+            new_image = imageform.save()
+            print ("[add_new_image] imageform.save result: {} ".format(new_image))
+            return redirect('all_view')
+    context = {
+        'imageform' : ImageForm
+    }
+    return render(request, 'Vokvarinn/add_image.html', context)
+
+def add_new_image_manual(plant, postdata, filedata):
+    # add image to db
+    print("[add_new_image_manual] :\n postdata {} \n filedata {} ".format(postdata, filedata))
+    data = {'plant':plant, 'image':filedata}
+    imageform = ImageForm(data=data)
+    if imageform.is_valid():
+        new_image = imageform.save()
+        print ("[add_new_image_manual] imageform.save result: {} ".format(new_image))
+
+def view_all_images(request):
+    # add image to db
+    all_images = PlantImages.objects.all()
+    print ('[all_images] {} '. format(all_images))
+    context = {
+        'all_images' : all_images
+    }
+    return render(request, 'Vokvarinn/view_all_images.html', context)
+
 def create_new_plant_view(request):
     tasks = IntervalSchedule.objects.all()
     if request.method == 'POST':
         post_data = request.POST
         post_files = request.FILES
         plantform = PlantCreateForm(post_data)
-
+        imageform = ImageForm(post_data, post_files)
         print("[create_new_plant] name: {} ". format(plantform['name'].value()))
         if plantform.is_valid():
             new_plant = plantform.save()
-            imageform = ImageForm(post_data, post_files, instance=new_plant)
-            print('[create_new_plant] plantform result {}'.format(new_plant))
+            plant = new_plant
+            data = {'plant': plant, 'post_data':post_data, 'post_files':post_files}
+            add_new_image_manual(plant, post_data, post_files)
+            #imageform = ImageForm(data=data)
+            #print('[create_new_plant] imageform result {}'.format(imageform))
+            print('[create_new_plant] plantform.save result {}'.format(new_plant))
             #imageform['plant'] = new_plant
             #imageform.fields['plant'] = new_plant
-            if imageform.is_valid():
-                new_image = imageform.save()
-                print('[plant_create_view] imageform result {}'.format(new_image))
-            else:
-                print("[plant_create_view] imageform invalid {}".format(imageform.errors))
+            #if imageform.is_valid():
+            #    new_image = imageform.save()
+            #    print('[plant_create_view] imageform.save result {}'.format(new_image))
+            #else:
+            #    print("[plant_create_view] imageform invalid {}".format(imageform.errors))
             return redirect('all_view')
         else:
             print("[plant_create_view] plantform error: {}".format(plantform.errors))
@@ -228,7 +257,7 @@ def plant_edit_view(request, **kwargs):
         plantform = PlantCreateForm(post_data, file_data, instance=instance)
         imageform = ImageForm(post_data, file_data, instance=instance)
         if imageform.is_valid():
-            print ('[plant_edit_view] imageform valid...')
+            print ('[plant_edit_view] imageform valid {} '.format(imageform))
             imgedit = imageform.save()
             print ('[plant_edit_view] imageform saved: {} '.format(imgedit))
             #newdoc = Document(docfile = request.FILES['docfile'])
@@ -239,7 +268,7 @@ def plant_edit_view(request, **kwargs):
             print ("[ plant_edit_view ] imageform is INVALID error: {} ". format(imageform.errors))
         if plantform.is_valid():
             plant_edit = plantform.save()
-            print ("[plant_edit_view] edit {} ".format(plant_edit))
+            print ("[plant_edit_view] plantform saved {} ".format(plant_edit))
             return HttpResponseRedirect('/')
     else:
         plantform = PlantCreateForm(initial=data)

@@ -1,0 +1,16 @@
+{% extends 'vokvarinn/base.html' %}
+{% block content %}
+{% block extra_css %}
+{{ all_images.media.css }}
+{% endblock %}
+
+{% block extra_js %}
+{{ all_images.media.js }}
+{% endblock %}
+{% for image in all_images %}
+    <li>{{ image.plant }} <img height="200" width="200" src="{{ image.image.url }}"></li>
+{% endfor %}
+</ul>
+
+
+{% endblock %}
