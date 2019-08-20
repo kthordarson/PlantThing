@@ -110,11 +110,14 @@ def add_new_image(request):
     }
     return render(request, 'Vokvarinn/add_image.html', context)
 
+
 def add_new_image_manual(plant, postdata, filedata):
     # add image to db
-    print("[add_new_image_manual] :\n postdata {} \n filedata {} ".format(postdata, filedata))
+    print("[add_new_image_manual] plant: {} \n POSTDATA {} \n FILEDATA {} ".format(plant, postdata, filedata))
     data = {'plant':plant, 'image':filedata}
-    imageform = ImageForm(data=data)
+    instance = get_object_or_404(Plants, id=plant.id)
+    print ('[add_new_image_manual] INSTANCE: {} '.format(instance))
+    imageform = ImageForm(data=data, instance=instance)
     if imageform.is_valid():
         new_image = imageform.save()
         print ("[add_new_image_manual] imageform.save result: {} ".format(new_image))
