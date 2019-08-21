@@ -8,7 +8,7 @@
 {{ all_images.media.js }}
 {% endblock %}
 {% for image in all_images %}
-    <li>{{ image.plant }} <img height="200" width="200" src="{{ image.image.url }}"></li>
+    <li>Plant ID: {{ image.plant_id }} <img height="200" width="200" src="{{ image.image.url }}"></li>
 {% endfor %}
 
 

@@ -29,7 +29,7 @@ def plant_detail_view(request, *argv, **kwargs):
     print("[plant_detail_view request] ", request)
     plant_id = (kwargs['pk'])
     plant = Plants.objects.get(id=plant_id)
-    plant_images = PlantImages.objects.filter(id=plant_id)
+    plant_images = PlantImages.objects.filter(plant_id=plant_id)
     print('[plant_detail_view] images \n {}'.format(plant_images))
     now_aware = timezone.now()
     time_since = now_aware - plant.last_water
@@ -80,20 +80,26 @@ def plants_list_all_view(request):
 def insert_image(plant, image):
     # insert imange to database
     print("[insert_image] plant {}\n[insert_image] image {}".format(plant, image))
-    new_image = PlantImages(plant=plant, image=image)
+    new_image = PlantImages.object.create(plant=plant, image=image)
     result = new_image.save(force_insert=True)
     print("[insert_image] new_image {}\n[insert_image] result {} ".format(new_image, result))
 
 
-def add_new_image(request):
+def add_new_image(request, **kwargs):
     # add image to db
     if request.method == 'POST':
-        imageform = ImageForm(request.POST, request.FILES)
-        print("[add_new_image]\n post {} \n files {} ".format(request.POST, request.FILES))
+        plant_id = request.POST['plant_id'] or kwargs['pk']
+        plant = Plants.objects.get(pk=plant_id)
+        instance = get_object_or_404(Plants, id=plant_id)
+        image_to_insert = request.FILES['image']
+        data = {'plant': plant, 'plant_id': plant_id,  'image' : request.FILES['image'], }
+        imageform = ImageForm(instance=instance, data=data)
+        print("[add_new_image]\npost {}\nfiles {} ".format(request.POST, request.FILES))
         if imageform.is_valid():
-            new_image = imageform.save()
+            new_image = PlantImages(plant_id=plant_id, image=image_to_insert) #imageform.save(force_insert=True)
+            new_image.save(force_insert=True)
             print("[add_new_image] imageform.save result: {} ".format(new_image))
-            return redirect('all_view')
+            return redirect('view_all_images')
     context = {
         'imageform': ImageForm
     }
@@ -125,6 +131,7 @@ def create_new_plant_view(request):
     if request.method == 'POST':
         post_data = request.POST
         post_files = request.FILES
+        image_to_insert = post_files['image']
         plantform = PlantCreateForm(post_data)
         imageform = ImageForm(post_data, post_files)
         print("[create_new_plant] name: {} ".format(plantform['name'].value()))
@@ -134,8 +141,11 @@ def create_new_plant_view(request):
             instance = get_object_or_404(Plants, id=plant.id)
             imageform = ImageForm(post_data, post_files, instance=instance)
             if imageform.is_valid():
-                img_result = imageform.save()
-                print('[create_new_plant] imgform.save result {}'.format(img_result))
+                new_image = PlantImages(plant_id=new_plant.id, image=image_to_insert)  # imageform.save(force_insert=True)
+                new_image.save(force_insert=True)
+                imageform.save()
+                # img_result = imageform.save()
+                print('[create_new_plant] imgform.save result {}'.format(new_image))
 
             print('[create_new_plant] plantform.save result {}'.format(new_plant))
             return redirect('all_view')
@@ -189,7 +199,7 @@ def plant_edit_view(request, **kwargs):
 
 def plant_do_water(plant_id, amount, *args, **kwargs):
     # takes id and creates log entry
-    plant_id = (kwargs['pk'])
+    #plant_id = kwargs['pk']
     if amount > 1:
         now_aware = timezone.now()
         Plants.objects.filter(id=plant_id).update(last_water=now_aware)

@@ -71,7 +71,7 @@ class PlantLog(BaseModel):
 
 class PlantImages(models.Model):
     # plant = models.ForeignKey(Plants, default=1, on_delete=models.CASCADE, verbose_name='Plant name')
-    plant_id = models.IntegerField()
+    plant_id = models.IntegerField(blank=True)
     image = models.ImageField(blank=True, upload_to="static/plant_images/", verbose_name="Image",
                               default="PlantImagesTEST.jpg")
 

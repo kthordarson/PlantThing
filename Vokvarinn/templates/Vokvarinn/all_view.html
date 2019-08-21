@@ -40,6 +40,7 @@
 					<td>
 						<a class="btn btn-primary btn-sm" href="{% url 'plant_detail' item.pk %}" role="button">View</a>
 						<a class="btn btn-primary btn-sm" href="{% url 'plant_edit_view' item.pk %}" role="button">Edit</a>
+						<a class="btn btn-primary btn-sm" role="button" href="{% url 'add_new_image' item.pk %}">Add image</a>
 						<a class="btn btn-danger btn-sm" href="{% url 'plant_delete' item.pk %}" role="button">Delete</a>
 
 					</td>
