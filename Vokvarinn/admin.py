@@ -2,7 +2,6 @@ from django.contrib import admin
 from .models import Plants, PlantLog, PlantImages
 
 
-# Register your models here.
 class PlantsAdmin(admin.ModelAdmin):
     fields = [
         ('name',
@@ -29,4 +28,3 @@ class PlantImageAdmin(admin.ModelAdmin):
 admin.site.register(Plants, PlantsAdmin)
 admin.site.register(PlantLog, PlantLogAdmin)
 admin.site.register(PlantImages, PlantImageAdmin)
-# admin.site.register(Plants, MyModelAdmin)

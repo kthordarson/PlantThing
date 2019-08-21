@@ -64,7 +64,6 @@ class PlantCreateForm(forms.ModelForm):
 class ImageForm(forms.ModelForm):
     # plant = forms.ModelChoiceField(widget=forms.HiddenInput(), queryset=Plants.objects.all())
     plant = forms.ModelChoiceField(widget=forms.HiddenInput(),queryset=Plants.objects.all(), required=False)
-    # id = forms.IntegerField(widget=forms.HiddenInput())
     image = forms.ImageField(required=False, label='Select image')
 
     class Meta:
