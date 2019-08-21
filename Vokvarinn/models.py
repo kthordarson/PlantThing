@@ -70,7 +70,8 @@ class PlantLog(BaseModel):
 
 
 class PlantImages(models.Model):
-    plant = models.ForeignKey(Plants, default=1, on_delete=models.CASCADE, verbose_name='Plant name')
+    # plant = models.ForeignKey(Plants, default=1, on_delete=models.CASCADE, verbose_name='Plant name')
+    plant_id = models.IntegerField()
     image = models.ImageField(blank=True, upload_to="static/plant_images/", verbose_name="Image",
                               default="PlantImagesTEST.jpg")
 
@@ -78,10 +79,10 @@ class PlantImages(models.Model):
         verbose_name_plural = 'Images'
 
     def get_id(self):
-        return self.id
+        return self.plant_id
 
     def __unicode__(self):
-        return str(self.plant.name)
+        return str(self.plant_id)
 
     def __str__(self):
-        return str(self.plant.name)
+        return str(self.plant_id)
