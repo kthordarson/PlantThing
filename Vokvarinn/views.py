@@ -128,6 +128,8 @@ def view_all_images(request):
 
 def create_new_plant_view(request):
     tasks = IntervalSchedule.objects.all()
+    # todo if there is not IntervalSchedule, create one before creating new plant
+    print("[create_new_plant] tasks: {} ".format(tasks))
     if request.method == 'POST':
         post_data = request.POST
         post_files = request.FILES
@@ -166,9 +168,9 @@ def plant_edit_view(request, **kwargs):
     plant_id = str(kwargs['pk'])
     plant = Plants.objects.get(pk=plant_id)
     water_log = PlantLog.objects.filter(plant_id=plant_id)
-    task_selected = IntervalSchedule.objects.get(pk=plant.water_schedule.id)
+    # task_selected = IntervalSchedule.objects.get(pk=plant.water_schedule.id) or None
     data = {'name': plant.name, 'last_water': plant.last_water, 'info_url': plant.info_url, 'image': plant.image,
-            'water_schedule': task_selected, 'plant': plant, }
+             'plant': plant, }
     if request.method == 'POST':
         post_data = request.POST
         file_data = request.FILES
