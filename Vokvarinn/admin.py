@@ -20,15 +20,10 @@ class PlantLogAdmin(admin.ModelAdmin):
     fields = [('plant', 'last_water', 'amount')]
     list_display = ('plant', 'last_water', 'amount')
 
-class PlantImageAdmin(admin.ModelAdmin):
-    fields = [('plant', 'image')]
-    list_display = ('plant', 'image')
 
-class MyModelAdmin(admin.ModelAdmin):
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(MyModelAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields['my_field_name'].initial = 'a'
-        return form
+class PlantImageAdmin(admin.ModelAdmin):
+    fields = [('plant_id', 'image')]
+    list_display = ('plant_id', 'image')
 
 
 admin.site.register(Plants, PlantsAdmin)

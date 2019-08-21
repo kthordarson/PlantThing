@@ -22,14 +22,17 @@ class PlantTable(tables.Table):
 
 
 class PlantLogTable(tables.Table):
-#    last_water = tables.DateTimeColumn(format="d-m-Y H:i:s")
+    #    last_water = tables.DateTimeColumn(format="d-m-Y H:i:s")
     plant = tables.Column()
     last_water = tables.Column()
-    def __init__ (self, *args, **kwargs):
+
+    def __init__(self, *args, **kwargs):
         super(PlantLogTable, self).__init__(*args, **kwargs)
         self.counter = itertools.count()
+
     def render_row_number(self):
         return 'Row %d' % next(self.counter)
+
     def render_id(self, value):
         return '<%s>' % value
 
@@ -38,4 +41,3 @@ class PlantLogTable(tables.Table):
         fields = {'last_water', 'plant', 'amount'}
         sequence = ('last_water', 'plant', 'amount')
         template_name = 'django_tables2/bootstrap.html'
-

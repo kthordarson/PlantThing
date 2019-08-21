@@ -6,7 +6,7 @@ register = template.Library()
 @register.filter()
 def smooth_timedelta(timedeltaobj):
     """Convert a datetime.timedelta object into Days, Hours, Minutes, Seconds."""
-    print ("smooth_timedelta ", timedeltaobj)
+    print("smooth_timedelta ", timedeltaobj)
     secs = timedeltaobj.total_seconds()
     timetot = ""
     if secs > 86400:  # 60sec * 60min * 24hrs

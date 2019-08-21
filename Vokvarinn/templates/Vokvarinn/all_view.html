@@ -25,12 +25,10 @@
 					</td>
 					<td>
 						<ul>
-							<li>
 						{{ item.last_water|date:"d. M y - H:i" }}
 						{% for water in item.get_waterings %}
 						    <li>{{ water.last_water|date:"d. M y - H:i" }}</li>
 						{% endfor %}
-							</li>
 						</ul>
 					</td>
 					<td>

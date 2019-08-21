@@ -3,16 +3,16 @@ from PIL.ExifTags import TAGS, GPSTAGS
 
 
 class ImageMetaData(object):
-    '''
+    """
     Extract the exif data from any image. Data includes GPS coordinates,
     Focal Length, Manufacture, and more.
-    '''
+    """
     exif_data = None
     image = None
 
     def __init__(self, img_path):
         self.image = Image.open(img_path)
-        #print(self.image._getexif())
+        # print(self.image._getexif())
         self.get_exif_data()
         super(ImageMetaData, self).__init__()
 
@@ -63,7 +63,7 @@ class ImageMetaData(object):
         lat = None
         lng = None
         exif_data = self.get_exif_data()
-        #print(exif_data)
+        # print(exif_data)
         if "GPSInfo" in exif_data:
             gps_info = exif_data["GPSInfo"]
             gps_latitude = self.get_if_exist(gps_info, "GPSLatitude")
