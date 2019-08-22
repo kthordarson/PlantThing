@@ -18,10 +18,10 @@
 				<tr>
 					<td>
 						<div class="crop">
-							<img class="round-image" src="{{ item.image.url }}">
+							<a href="{% url 'plant_detail' item.pk %}"> <img class="round-image" src="{{ item.image.url }}"></a>
 						</div>
 					<td>
-						{{ item.name }}
+						<a href="{% url 'plant_detail' item.pk %}">{{ item.name }}</a>
 					</td>
 					<td>
 						<ul>

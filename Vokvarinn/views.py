@@ -13,10 +13,9 @@ from .models import Plants, PlantLog, PlantImages
 from .tables import PlantTable, PlantLogTable
 from PIL import Image, ExifTags
 
+
 def all_view(request, **kwargs):
     table = Plants.objects.all().order_by('id')
-    if kwargs:
-        plant_id = (kwargs['pk'])
     waterform = Waterform()
     context = {
         'table': table,
@@ -37,13 +36,15 @@ def plant_detail_view(request, *argv, **kwargs):
         imgdata = ImageMetaData(plant.image)
         imgexif = imgdata.get_exif_data()  # DateTimeDigitized
         imgdate = imgexif['DateTime']
-    except:
+    except Exception as e:
+        print('Exception: {} '.format(e))
         imgdate = datetime.datetime.now()
     print("image date: ", imgdate)
     # datetime.datetime.strptime(datetime_str,,'%Y:%m:%d %H:%M:%S')
     try:
         task_selected = IntervalSchedule.objects.get(pk=plant.water_schedule.id)
-    except:
+    except Exception as e:
+        print('Exception: {} '.format(e))
         task_selected = None
     water_log = PlantLogTable(PlantLog.objects.filter(plant_id=plant_id).order_by('-last_water'))
     data = {'plant': plant, 'last_water': plant.last_water, 'info_url': plant.info_url, 'image': plant.image,
@@ -95,11 +96,11 @@ def add_new_image(request, **kwargs):
         plant = Plants.objects.get(pk=plant_id)
         instance = get_object_or_404(Plants, id=plant_id)
         image_to_insert = request.FILES['image']
-        data = {'plant': plant, 'plant_id': plant_id,  'image' : request.FILES['image'], }
+        data = {'plant': plant, 'plant_id': plant_id,  'image': request.FILES['image'], }
         imageform = ImageForm(instance=instance, data=data)
         print("[add_new_image]\npost {}\nfiles {} ".format(request.POST, request.FILES))
         if imageform.is_valid():
-            new_image = PlantImages(plant_id=plant_id, image=image_to_insert) #imageform.save(force_insert=True)
+            new_image = PlantImages(plant_id=plant_id, image=image_to_insert)
             new_image.save(force_insert=True)
             print("[add_new_image] imageform.save result: {} ".format(new_image))
             return redirect('view_all_images')
@@ -117,6 +118,7 @@ def add_new_image_manual(plant, postdata, filedata):
     imageform = ImageForm(data=data, instance=instance)
     if imageform.is_valid():
         new_image = imageform.save()
+        print("[add_image_manual] result {}".format(new_image))
 
 
 def view_all_images(request):
@@ -182,10 +184,12 @@ def plant_edit_view(request, **kwargs):
         imageform = ImageForm(post_data, file_data, instance=instance)
         if imageform.is_valid():
             imgedit = imageform.save()
+            print("[plant_edit_view] imgedit result {}".format(imgedit))
         else:
             print("[ plant_edit_view ] imageform is INVALID error: {} ".format(imageform.errors))
         if plantform.is_valid():
             plant_edit = plantform.save()
+            print("[plant_edit_view] plantedit result {}".format(plant_edit))
             return HttpResponseRedirect('/')
     else:
         plantform = PlantCreateForm(initial=data)
