@@ -40,7 +40,7 @@ class Waterform(forms.ModelForm):
     last_water = forms.DateTimeField(widget=forms.HiddenInput())
     amount = forms.IntegerField()
     #image = forms.ImageField(required=False)
-    image = ProcessedImageField(spec_id='Vokvarinn:image', processors=[Transpose()],
+    image = ProcessedImageField(required=False, spec_id='Vokvarinn:image', processors=[Transpose()],
                                 format='JPEG')
 
     class Meta:
