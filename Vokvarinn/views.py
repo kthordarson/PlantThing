@@ -139,8 +139,7 @@ def create_new_plant_view(request):
         print("[create_new_plant] name: {} ".format(plantform['name'].value()))
         if plantform.is_valid():
             new_plant = plantform.save()
-            plant = new_plant
-            instance = get_object_or_404(Plants, id=plant.id)
+            instance = get_object_or_404(Plants, id=new_plant.id)
             imageform = ImageForm(post_data, post_files, instance=instance)
             if imageform.is_valid():
                 new_image = PlantImages(plant_id=new_plant.id, image=image_to_insert)  # imageform.save(force_insert=True)
