@@ -11,7 +11,7 @@ from .forms import PlantCreateForm, Waterform, ScheduleForm, ImageForm
 from .imagedata import ImageMetaData
 from .models import Plants, PlantLog, PlantImages
 from .tables import PlantTable, PlantLogTable
-
+from PIL import Image, ExifTags
 
 def all_view(request, **kwargs):
     table = Plants.objects.all().order_by('id')
@@ -41,7 +41,10 @@ def plant_detail_view(request, *argv, **kwargs):
         imgdate = datetime.datetime.now()
     print("image date: ", imgdate)
     # datetime.datetime.strptime(datetime_str,,'%Y:%m:%d %H:%M:%S')
-    task_selected = IntervalSchedule.objects.get(pk=plant.water_schedule.id)
+    try:
+        task_selected = IntervalSchedule.objects.get(pk=plant.water_schedule.id)
+    except:
+        task_selected = None
     water_log = PlantLogTable(PlantLog.objects.filter(plant_id=plant_id).order_by('-last_water'))
     data = {'plant': plant, 'last_water': plant.last_water, 'info_url': plant.info_url, 'image': plant.image,
             'water_schedule': task_selected, }
@@ -129,7 +132,6 @@ def view_all_images(request):
 def create_new_plant_view(request):
     tasks = IntervalSchedule.objects.all()
     # todo if there is not IntervalSchedule, create one before creating new plant
-    print("[create_new_plant] tasks: {} ".format(tasks))
     if request.method == 'POST':
         post_data = request.POST
         post_files = request.FILES

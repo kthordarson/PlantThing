@@ -1,6 +1,10 @@
 from django import forms
 from flatpickr import DateTimePickerInput
 from django.utils import timezone
+from PIL import Image
+
+from imagekit.forms import ProcessedImageField
+from imagekit.processors import ResizeToFill, Transpose, ResizeToFit
 
 try:
     from djcelery.models import PeriodicTasks, PeriodicTask, IntervalSchedule
@@ -35,7 +39,9 @@ class Waterform(forms.ModelForm):
     plant = forms.ModelChoiceField(widget=forms.HiddenInput(), queryset=Plants.objects.all())
     last_water = forms.DateTimeField(widget=forms.HiddenInput())
     amount = forms.IntegerField()
-    image = forms.ImageField(required=False)
+    #image = forms.ImageField(required=False)
+    image = ProcessedImageField(spec_id='Vokvarinn:image', processors=[Transpose()],
+                                format='JPEG')
 
     class Meta:
         model = PlantLog
@@ -65,7 +71,8 @@ class ImageForm(forms.ModelForm):
     # plant = forms.ModelChoiceField(widget=forms.HiddenInput(), queryset=Plants.objects.all())
     plant = forms.ModelChoiceField(widget=forms.HiddenInput(), queryset=Plants.objects.all(), required=False)
     plant_id = forms.ModelChoiceField(widget=forms.HiddenInput(), queryset=Plants.objects.all(), required=False)
-    image = forms.ImageField(required=False, label='Select image')
+    #image = forms.ImageField(required=False, label='Select image')
+    image = ProcessedImageField(spec_id='Vokvarinn:image', processors=[Transpose()], format='JPEG')
 
     class Meta:
         model = PlantImages
