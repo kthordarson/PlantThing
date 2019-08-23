@@ -19,7 +19,8 @@ class Plants(BaseModel):
                                       null=True)
     info_url = models.URLField(max_length=200, null=True, blank=True, verbose_name='Info url',
                                default="http://www.wikipedia.org")
-    water_schedule = models.ForeignKey(IntervalSchedule, on_delete=models.CASCADE, verbose_name='Watering schedule', blank=True, null=True)
+    water_schedule = models.ForeignKey(IntervalSchedule, on_delete=models.CASCADE, verbose_name='Watering schedule',
+                                       blank=True, null=True)
     # water_schedule = models.CharField(max_length=30, default="1")
     image = models.ImageField(null=True, blank=True, upload_to="static/plant_images/", verbose_name="Image",
                               default="DefaultPlant.jpg")

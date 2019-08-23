@@ -9,7 +9,7 @@ from .models import Plants, PlantLog
 class PlantTable(tables.Table):
     # fav = ImageColumn()
 
-    image = tables.TemplateColumn('<div class="crop"><img class="round-image" src="{{ record.image }}"></div> ')
+    # image = tables.TemplateColumn('<div class="crop"><img class="round-image" src="{{ record.image }}"></div> ')
     id = tables.LinkColumn('plant_detail', args=[A('pk')])
     name = tables.LinkColumn('plant_detail', args=[A('pk')])
     water_schedule = tables.LinkColumn('plant_detail', args=[A('pk')])

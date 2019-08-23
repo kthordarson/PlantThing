@@ -1,5 +1,6 @@
 # stjanidev
 import datetime
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
@@ -7,11 +8,11 @@ from django.shortcuts import render
 from django.utils import timezone
 from django_tables2 import RequestConfig
 from djcelery.models import IntervalSchedule
+
 from .forms import PlantCreateForm, Waterform, ScheduleForm, ImageForm
 from .imagedata import ImageMetaData
 from .models import Plants, PlantLog, PlantImages
 from .tables import PlantTable, PlantLogTable
-from PIL import Image, ExifTags
 
 
 def all_view(request, **kwargs):
@@ -73,22 +74,6 @@ def plant_detail_view(request, *argv, **kwargs):
     return render(request, "vokvarinn/plant_detail.html", context)
 
 
-def plants_list_all_view(request):
-    planttable = PlantTable(Plants.objects.all())
-    context = {
-        'planttable': planttable,
-    }
-    return render(request, 'Vokvarinn/all_plants.html', context)
-
-
-def insert_image(plant, image):
-    # insert imange to database
-    print("[insert_image] plant {}\n[insert_image] image {}".format(plant, image))
-    new_image = PlantImages.object.create(plant=plant, image=image)
-    result = new_image.save(force_insert=True)
-    print("[insert_image] new_image {}\n[insert_image] result {} ".format(new_image, result))
-
-
 def add_new_image(request, **kwargs):
     # add image to db
     if request.method == 'POST':
@@ -96,7 +81,7 @@ def add_new_image(request, **kwargs):
         plant = Plants.objects.get(pk=plant_id)
         instance = get_object_or_404(Plants, id=plant_id)
         image_to_insert = request.FILES['image']
-        data = {'plant': plant, 'plant_id': plant_id,  'image': request.FILES['image'], }
+        data = {'plant': plant, 'plant_id': plant_id, 'image': request.FILES['image'], }
         imageform = ImageForm(instance=instance, data=data)
         print("[add_new_image]\npost {}\nfiles {} ".format(request.POST, request.FILES))
         if imageform.is_valid():
@@ -108,17 +93,6 @@ def add_new_image(request, **kwargs):
         'imageform': ImageForm
     }
     return render(request, 'Vokvarinn/add_image.html', context)
-
-
-def add_new_image_manual(plant, postdata, filedata):
-    # add image to db
-    print("[add_new_image_manual] plant: {} \n POSTDATA {} \n FILEDATA {} ".format(plant, postdata, filedata))
-    data = {'plant': plant, 'image': filedata}
-    instance = get_object_or_404(Plants, id=plant.id)
-    imageform = ImageForm(data=data, instance=instance)
-    if imageform.is_valid():
-        new_image = imageform.save()
-        print("[add_image_manual] result {}".format(new_image))
 
 
 def view_all_images(request):
@@ -146,7 +120,8 @@ def create_new_plant_view(request):
             instance = get_object_or_404(Plants, id=new_plant.id)
             imageform = ImageForm(post_data, post_files, instance=instance)
             if imageform.is_valid():
-                new_image = PlantImages(plant_id=new_plant.id, image=image_to_insert)  # imageform.save(force_insert=True)
+                new_image = PlantImages(plant_id=new_plant.id,
+                                        image=image_to_insert)  # imageform.save(force_insert=True)
                 new_image.save(force_insert=True)
                 imageform.save()
                 # img_result = imageform.save()
@@ -173,7 +148,7 @@ def plant_edit_view(request, **kwargs):
     water_log = PlantLog.objects.filter(plant_id=plant_id)
     # task_selected = IntervalSchedule.objects.get(pk=plant.water_schedule.id) or None
     data = {'name': plant.name, 'last_water': plant.last_water, 'info_url': plant.info_url, 'image': plant.image,
-             'plant': plant, }
+            'plant': plant, }
     if request.method == 'POST':
         post_data = request.POST
         file_data = request.FILES
@@ -206,7 +181,7 @@ def plant_edit_view(request, **kwargs):
 
 def plant_do_water(plant_id, amount, *args, **kwargs):
     # takes id and creates log entry
-    #plant_id = kwargs['pk']
+    # plant_id = kwargs['pk']
     if amount > 1:
         now_aware = timezone.now()
         Plants.objects.filter(id=plant_id).update(last_water=now_aware)

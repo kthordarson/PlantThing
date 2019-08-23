@@ -39,7 +39,7 @@ class Waterform(forms.ModelForm):
     plant = forms.ModelChoiceField(widget=forms.HiddenInput(), queryset=Plants.objects.all())
     last_water = forms.DateTimeField(widget=forms.HiddenInput())
     amount = forms.IntegerField()
-    #image = forms.ImageField(required=False)
+    # image = forms.ImageField(required=False)
     image = ProcessedImageField(required=False, spec_id='Vokvarinn:image', processors=[Transpose()],
                                 format='JPEG')
 
@@ -71,7 +71,7 @@ class ImageForm(forms.ModelForm):
     # plant = forms.ModelChoiceField(widget=forms.HiddenInput(), queryset=Plants.objects.all())
     plant = forms.ModelChoiceField(widget=forms.HiddenInput(), queryset=Plants.objects.all(), required=False)
     plant_id = forms.ModelChoiceField(widget=forms.HiddenInput(), queryset=Plants.objects.all(), required=False)
-    #image = forms.ImageField(required=False, label='Select image')
+    # image = forms.ImageField(required=False, label='Select image')
     image = ProcessedImageField(spec_id='Vokvarinn:image', processors=[Transpose()], format='JPEG')
 
     class Meta:
