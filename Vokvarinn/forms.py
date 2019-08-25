@@ -49,14 +49,14 @@ class Waterform(forms.ModelForm):
 
 
 class PlantCreateForm(forms.ModelForm):
-    name = forms.CharField()
-    last_water = forms.DateTimeField(widget=DateTimePickerInput(), required=False)
+    name = forms.CharField(widget=forms.TextInput(attrs={'size': '40'}))
+    last_water = forms.DateTimeField(widget=DateTimePickerInput(attrs={'size': '40'}), required=False)
     info_url = forms.URLInput()
     try:
         water_schedule = forms.Select(choices=list(IntervalSchedule.objects.values_list('id', 'every', 'period')))
-    except:
+    except Exception as e:
+        print ('Error in form...{}'.format(e))
         pass
-
     # image = forms.ImageField()
     class Meta:
         model = Plants
